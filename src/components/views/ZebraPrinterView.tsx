@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useLibrary } from '../../context/LibraryContext';
 import { Barcode } from '../common/Barcode';
 import { Book, LabelQueueItem } from '../../types';
+import { checkZebraBrowserPrintStatus, sendZplToZebraBrowserPrint, ZebraPrinterDevice } from '../../utils/zebraService';
 import {
   Printer,
   Copy,
@@ -52,6 +53,10 @@ export const ZebraPrinterView: React.FC = () => {
   const [printDarkness, setPrintDarkness] = useState<number>(22);
   const [printSpeed, setPrintSpeed] = useState<number>(4);
 
+  const [zebraDevice, setZebraDevice] = useState<ZebraPrinterDevice | null>(null);
+  const [isBrowserPrintActive, setIsBrowserPrintActive] = useState(false);
+  const [activeHost, setActiveHost] = useState('http://127.0.0.1:9100');
+  const [isPrinting, setIsPrinting] = useState(false);
   const [copiedZpl, setCopiedZpl] = useState<boolean>(false);
   const [previewZoom, setPreviewZoom] = useState<boolean>(true);
 
@@ -70,6 +75,14 @@ export const ZebraPrinterView: React.FC = () => {
   const [batchCount, setBatchCount] = useState(6);
   const [batchTitle, setBatchTitle] = useState('Rahula College Library');
   const [batchShelf, setBatchShelf] = useState('Shelf A-01');
+
+  useEffect(() => {
+    checkZebraBrowserPrintStatus().then((result) => {
+      setIsBrowserPrintActive(result.isAvailable);
+      if (result.activeHost) setActiveHost(result.activeHost);
+      if (result.defaultPrinter) setZebraDevice(result.defaultPrinter);
+    }).catch(() => setIsBrowserPrintActive(false));
+  }, []);
 
   const selectedBook = books.find((b) => b.id === selectedBookId) || books[0];
 
@@ -234,6 +247,18 @@ export const ZebraPrinterView: React.FC = () => {
     addToast({ type: 'success', title: 'ZPL file downloaded', message: 'Send this file to the label printer when you are ready.' });
   };
 
+  const printZplWithBrowser = async (code: string) => {
+    setIsPrinting(true);
+    const result = await sendZplToZebraBrowserPrint(code, zebraDevice, activeHost);
+    setIsPrinting(false);
+    if (result.success) {
+      addToast({ type: 'success', title: 'Labels sent to printer', message: 'The Zebra printer received the label file.' });
+      return true;
+    }
+    addToast({ type: 'warning', title: 'Printer not ready', message: result.message || 'Open Zebra Browser Print and try again.' });
+    return false;
+  };
+
   // Print Full 3-Sticker Row (Consumes 3 items from queue)
   const handlePrintFullRow = async () => {
     if (labelQueue.length < 3) {
@@ -247,8 +272,7 @@ export const ZebraPrinterView: React.FC = () => {
 
     const row = labelQueue.slice(0, 3);
     const zpl = generateZplForRow(row);
-    downloadZplFile(zpl, 'labels-row');
-    flushNextLabelRow();
+    if (await printZplWithBrowser(zpl)) flushNextLabelRow();
   };
 
   // Force Print 1 Sticker Now (Consumes only 1 item from queue)
@@ -264,8 +288,7 @@ export const ZebraPrinterView: React.FC = () => {
 
     const item = labelQueue[0];
     const zpl = generateZplForRow([item, null, null]);
-    downloadZplFile(zpl, 'label');
-    removeFromLabelQueue(item.id);
+    if (await printZplWithBrowser(zpl)) removeFromLabelQueue(item.id);
   };
 
   // Add Quick Book to Queue
@@ -373,8 +396,8 @@ export const ZebraPrinterView: React.FC = () => {
               <span>Print labels</span>
             </span>
 
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-900 border border-neutral-700 text-neutral-300 text-xs font-semibold">
-              <span>Downloadable ZPL</span>
+            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-semibold ${isBrowserPrintActive ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-300' : 'bg-neutral-900 border-neutral-700 text-neutral-300'}`}>
+              <span>{isBrowserPrintActive ? 'Printer ready' : 'Printer not detected'}</span>
             </span>
           </div>
 
@@ -388,12 +411,12 @@ export const ZebraPrinterView: React.FC = () => {
 
         <div className="flex flex-wrap items-center gap-2.5">
           <button
-            onClick={() => downloadZplFile(fullZplCode)}
-            disabled={labelQueue.length === 0}
+            onClick={() => printZplWithBrowser(fullZplCode)}
+            disabled={labelQueue.length === 0 || isPrinting}
             className="px-4 py-2.5 rounded-xl bg-red-800 hover:bg-red-700 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-red-950/40 transition"
           >
             <Printer className="w-4 h-4 text-amber-300" />
-            <span>Download ZPL</span>
+            <span>{isPrinting ? 'Sending to printer...' : 'Print labels'}</span>
           </button>
         </div>
       </div>
