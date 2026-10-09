@@ -3,7 +3,8 @@ import { useLibrary } from '../../context/LibraryContext';
 import { Modal } from './Modal';
 import { CollegeCrest } from './CollegeCrest';
 import { Barcode } from './Barcode';
-import { Printer } from 'lucide-react';
+import { Download } from 'lucide-react';
+import { downloadReceiptPdf } from '../../utils/pdfPrint';
 
 export const PrintReceiptModal: React.FC = () => {
   const { printData, setPrintData } = useLibrary();
@@ -12,8 +13,8 @@ export const PrintReceiptModal: React.FC = () => {
 
   const data = printData.payload;
 
-  const handlePrint = () => {
-    window.print();
+  const handleDownload = async () => {
+    await downloadReceiptPdf(data);
   };
 
   return (
@@ -119,11 +120,11 @@ export const PrintReceiptModal: React.FC = () => {
             Close
           </button>
           <button
-            onClick={handlePrint}
+            onClick={handleDownload}
             className="px-4 py-2 text-xs font-bold text-white bg-red-800 hover:bg-red-700 rounded-xl shadow-sm flex items-center gap-1.5 transition"
           >
-            <Printer className="w-4 h-4" />
-            <span>Print Receipt</span>
+            <Download className="w-4 h-4" />
+            <span>Download PDF</span>
           </button>
         </div>
       </div>

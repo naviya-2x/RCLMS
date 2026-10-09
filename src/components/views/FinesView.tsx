@@ -80,7 +80,7 @@ export const FinesView: React.FC = () => {
     collectFine(selectedFine.id, paymentMethod);
     setIsCollectModalOpen(false);
 
-    // Prompt print receipt
+    // Open the receipt download modal
     setPrintData({
       type: 'receipt',
       title: 'Fine Payment Receipt',
@@ -117,7 +117,7 @@ export const FinesView: React.FC = () => {
             <span>Fines & Late Fee Management</span>
           </h2>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-            Audit overdue charges, receive fee payments, record institutional waivers, and issue print receipts.
+            Audit overdue charges, receive fee payments, record institutional waivers, and download receipts.
           </p>
         </div>
         <div className="text-xs font-mono font-bold text-maroon-800 dark:text-gold-300 bg-maroon-50 dark:bg-maroon-950/60 px-3 py-1.5 rounded-lg border border-maroon-200 dark:border-maroon-800">
@@ -293,7 +293,7 @@ export const FinesView: React.FC = () => {
                             })
                           }
                           className="p-1.5 text-gray-400 hover:text-maroon-800 dark:hover:text-gold-400 rounded-lg transition"
-                          title="Print Receipt"
+                          title="Download Receipt PDF"
                         >
                           <Printer className="w-3.5 h-3.5" />
                         </button>
@@ -366,7 +366,7 @@ export const FinesView: React.FC = () => {
                 className="px-5 py-2 font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-card transition flex items-center gap-1.5"
               >
                 <CheckCircle2 className="w-4 h-4" />
-                <span>Confirm & Print Receipt</span>
+                <span>Confirm & Download Receipt</span>
               </button>
             </div>
           </form>

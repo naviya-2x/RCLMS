@@ -108,7 +108,7 @@ export const MemberProfileView: React.FC<MemberProfileViewProps> = ({ onBack }) 
             className="px-3 py-1.5 text-xs font-semibold text-neutral-700 dark:text-neutral-300 bg-white dark:bg-[#14171F] border border-neutral-200 dark:border-neutral-800 rounded-xl hover:bg-neutral-50 transition flex items-center gap-1.5"
           >
             <Printer className="w-3.5 h-3.5" />
-            <span>Print ID Card</span>
+            <span>Download ID PDF</span>
           </button>
           <button
             onClick={() => setActiveTab('borrow')}

@@ -3,7 +3,8 @@ import { useLibrary } from '../../context/LibraryContext';
 import { Modal } from './Modal';
 import { CollegeCrest } from './CollegeCrest';
 import { Barcode } from './Barcode';
-import { Printer } from 'lucide-react';
+import { Download, FileCode } from 'lucide-react';
+import { downloadLibraryCardPdf, downloadMemberZpl } from '../../utils/pdfPrint';
 
 export const PrintLibraryCardModal: React.FC = () => {
   const { printData, setPrintData } = useLibrary();
@@ -12,8 +13,8 @@ export const PrintLibraryCardModal: React.FC = () => {
 
   const member = printData.payload;
 
-  const handlePrint = () => {
-    window.print();
+  const handleDownloadPdf = async () => {
+    await downloadLibraryCardPdf(member);
   };
 
   return (
@@ -97,11 +98,18 @@ export const PrintLibraryCardModal: React.FC = () => {
             Close
           </button>
           <button
-            onClick={handlePrint}
+            onClick={() => downloadMemberZpl(member)}
+            className="px-4 py-2 text-xs font-semibold text-neutral-700 dark:text-neutral-300 border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl flex items-center gap-1.5 transition"
+          >
+            <FileCode className="w-4 h-4" />
+            <span>Download ZPL</span>
+          </button>
+          <button
+            onClick={handleDownloadPdf}
             className="px-4 py-2 text-xs font-bold text-white bg-red-800 hover:bg-red-700 rounded-xl shadow-sm flex items-center gap-1.5 transition"
           >
-            <Printer className="w-4 h-4" />
-            <span>Print Pass</span>
+            <Download className="w-4 h-4" />
+            <span>Download ID PDF</span>
           </button>
         </div>
       </div>
