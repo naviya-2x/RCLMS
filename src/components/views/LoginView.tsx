@@ -152,14 +152,14 @@ export const LoginView: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-neutral-50 text-neutral-950 flex flex-col justify-between p-4 sm:p-6 font-sans">
+    <div className="min-h-screen overflow-x-hidden bg-neutral-50 text-neutral-950 flex flex-col p-4 sm:p-6 font-sans">
       <div className="w-full max-w-5xl mx-auto py-2">
         <span className="text-xs font-semibold tracking-wide text-neutral-700">Rahula College Library</span>
       </div>
 
       {/* Main sign-in workspace */}
-      <div className="w-full max-w-5xl mx-auto my-auto grid min-w-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] gap-8 items-stretch">
-        <div className="hidden lg:flex rounded-2xl bg-neutral-950 p-10 text-white flex-col justify-between min-h-[34rem]">
+      <div className="w-full max-w-5xl mx-auto flex-1 py-8 lg:py-12 grid min-w-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] gap-8 items-center">
+        <div className="hidden lg:flex rounded-2xl bg-neutral-950 p-10 text-white flex-col justify-between min-h-[34rem] h-full">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">Rahula College Library</p>
             <h2 className="mt-8 max-w-lg text-4xl font-bold leading-tight tracking-tight">A quieter way to run the library.</h2>
@@ -172,7 +172,7 @@ export const LoginView: React.FC = () => {
           </div>
         </div>
 
-      <div className="w-full min-w-0 max-w-md lg:max-w-none mx-auto bg-white border border-neutral-200 rounded-2xl shadow-sm p-6 sm:p-8 space-y-6">
+      <div className="w-full min-w-0 max-w-md lg:max-w-none mx-auto bg-white border border-neutral-200 rounded-2xl shadow-sm p-6 sm:p-8 space-y-6 self-center">
         {/* Header Branding */}
         <div className="text-center space-y-3">
           <div className="w-20 h-20 mx-auto rounded-2xl bg-neutral-50 border border-neutral-200 flex items-center justify-center p-2">
@@ -292,7 +292,7 @@ export const LoginView: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3 rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-xs tracking-wide shadow-md transition flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full py-3 rounded-xl bg-neutral-950 hover:bg-neutral-800 text-white font-bold text-xs tracking-wide shadow-md transition flex items-center justify-center gap-2 disabled:opacity-50"
             >
               <span>{isSubmitting ? 'Signing in...' : 'Sign In'}</span>
               <ArrowRight className="w-4 h-4" />

@@ -269,7 +269,16 @@ export const MembersView: React.FC = () => {
       {/* Members Table */}
       <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+          <table className="w-full min-w-[980px] table-fixed text-left text-xs">
+            <colgroup>
+              <col className="w-[23%]" />
+              <col className="w-[16%]" />
+              <col className="w-[10%]" />
+              <col className="w-[21%]" />
+              <col className="w-[12%]" />
+              <col className="w-[9%]" />
+              <col className="w-[9%]" />
+            </colgroup>
             <thead className="bg-gray-50 dark:bg-slate-800/80 text-gray-500 dark:text-gray-400 font-semibold border-b border-gray-100 dark:border-slate-800">
               <tr>
                 <th className="py-3 px-4">Member Name</th>
@@ -288,7 +297,7 @@ export const MembersView: React.FC = () => {
                   className="hover:bg-gray-50/80 dark:hover:bg-slate-800/40 transition group"
                 >
                   {/* Photo & Name */}
-                  <td className="py-3 px-4">
+                  <td className="align-top py-3 px-4">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-maroon-900 to-maroon-700 text-gold-300 font-bold flex items-center justify-center text-xs flex-shrink-0 shadow-2xs">
                         {member.name
@@ -309,23 +318,23 @@ export const MembersView: React.FC = () => {
                   </td>
 
                   {/* ID */}
-                  <td className="py-3 px-3 font-mono text-[11px] text-gray-600 dark:text-gray-400">
+                  <td className="align-top break-words py-3 px-3 font-mono text-[11px] text-gray-600 dark:text-gray-400">
                     {member.memberId}
                   </td>
 
                   {/* Type */}
-                  <td className="py-3 px-3">
+                  <td className="align-top py-3 px-3">
                     <StatusBadge status={member.type} size="sm" />
                   </td>
 
                   {/* Contact */}
-                  <td className="py-3 px-3 text-gray-500 dark:text-gray-400">
-                    <div className="truncate max-w-[140px]">{member.email}</div>
-                    <div className="text-[10px] font-mono">{member.phone}</div>
+                  <td className="align-top py-3 px-3 text-gray-500 dark:text-gray-400">
+                    <div className="max-w-[220px] break-words leading-4">{member.email || '—'}</div>
+                    <div className="mt-1 break-words text-[10px] font-mono leading-4">{member.phone || '—'}</div>
                   </td>
 
                   {/* Borrowed Count */}
-                  <td className="py-3 px-3 text-center">
+                  <td className="align-top py-3 px-3 text-center">
                     <span
                       className={`font-mono font-bold ${
                         member.currentlyBorrowedCount >= member.maxBorrowLimit
@@ -344,12 +353,12 @@ export const MembersView: React.FC = () => {
                   </td>
 
                   {/* Status */}
-                  <td className="py-3 px-3">
+                  <td className="align-top py-3 px-3">
                     <StatusBadge status={member.status} size="sm" />
                   </td>
 
                   {/* Actions */}
-                  <td className="py-3 px-4 text-right">
+                  <td className="align-top whitespace-nowrap py-3 px-4 text-right">
                     <div className="flex items-center justify-end gap-1">
                       <button
                         onClick={() =>

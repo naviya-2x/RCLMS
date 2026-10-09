@@ -433,27 +433,27 @@ export const ZebraPrinterView: React.FC = () => {
         }
       `}</style>
 
-      {/* Modern High-Tech Header */}
+      {/* Simple print header */}
       <div className="rounded-3xl bg-[#14171F] p-6 lg:p-8 text-white border border-neutral-800 shadow-xl flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div className="space-y-1.5">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-900 border border-neutral-700 text-neutral-300 text-xs font-semibold">
               <Printer className="w-3.5 h-3.5 text-neutral-300" />
-              <span>Label printing</span>
+              <span>Print labels</span>
             </span>
 
             {isBrowserPrintActive ? (
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-bold">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>Printer ready</span>
+                <span>Ready to print</span>
               </span>
             ) : (
               <button
                 onClick={checkZebraStatus}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-900 border border-neutral-700 text-neutral-300 hover:text-white text-xs font-mono transition"
-                title="Check whether the local label printer is available"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-900 border border-neutral-700 text-neutral-300 hover:text-white text-xs font-semibold transition"
+                title="Check the label printer"
               >
-                <span>Refresh</span>
+                <span>Check printer</span>
               </button>
             )}
           </div>
@@ -462,27 +462,17 @@ export const ZebraPrinterView: React.FC = () => {
             Print Book Labels
           </h1>
           <p className="text-neutral-400 text-xs sm:text-sm max-w-2xl">
-            Add books, check the preview, and print when you are ready.
+            Add a book, review the preview, and print its library label.
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5">
-
-
-          <button
-            onClick={handleBrowserThermalPrint}
-            className="px-3.5 py-2.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-300 font-semibold text-xs flex items-center gap-2 border border-neutral-700 transition"
-            title="Open browser print dialogue (if printing via Windows/Mac driver)"
-          >
-            <Printer className="w-4 h-4 text-neutral-400" />
-            <span>Print using this computer</span>
-          </button>
           <button
             onClick={() => handleDirectWebPrint()}
             disabled={isUsbConnecting}
             className="px-4 py-2.5 rounded-xl bg-red-800 hover:bg-red-700 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-red-950/40 transition"
           >
-            <Usb className="w-4 h-4 text-amber-300" />
+            <Printer className="w-4 h-4 text-amber-300" />
             <span>{isUsbConnecting ? 'Printing labels...' : 'Print labels'}</span>
           </button>
         </div>
@@ -504,7 +494,7 @@ export const ZebraPrinterView: React.FC = () => {
                 {isRowComplete ? '3 of 3 labels ready' : `${currentStickerCount} of 3 labels ready`}
               </span>
             </div>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">Add up to three books, then print the row together.</p>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">Add up to three books, then print them together.</p>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
@@ -542,19 +532,19 @@ export const ZebraPrinterView: React.FC = () => {
         {/* Plain-language print note */}
         <div className="p-3 rounded-xl bg-neutral-900 border border-neutral-800 text-xs text-neutral-300 flex items-center gap-2">
           <Info className="w-4 h-4 text-neutral-400" />
-          <span>Labels are prepared for the library sticker roll.</span>
+          <span>Labels are prepared for the library sticker roll. You can print a partial row when needed.</span>
         </div>
 
         {/* Visual 3 Stickers in One Line */}
         <div className="p-5 rounded-2xl bg-neutral-100 dark:bg-[#0B0D11] border border-neutral-200 dark:border-neutral-800 space-y-3">
-          <div className="flex items-center justify-between text-xs font-mono text-neutral-500">
-            <span>Preview</span>
+            <div className="flex items-center justify-between text-xs font-semibold text-neutral-500">
+            <span>Label preview</span>
             <button
               onClick={() => setPreviewZoom(!previewZoom)}
               className="text-amber-500 hover:underline flex items-center gap-1 font-semibold"
             >
               <ZoomIn className="w-3.5 h-3.5" />
-              <span>{previewZoom ? 'Larger preview' : 'Actual size'}</span>
+              <span>{previewZoom ? 'Smaller preview' : 'Larger preview'}</span>
             </button>
           </div>
 
