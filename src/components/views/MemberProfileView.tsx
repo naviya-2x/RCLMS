@@ -123,11 +123,11 @@ export const MemberProfileView: React.FC<MemberProfileViewProps> = ({ onBack }) 
       {/* Main Profile Header Card */}
       <div className="bg-white dark:bg-[#14171F] border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 sm:p-8 shadow-xs">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-neutral-100 dark:border-neutral-800">
-          <div className="flex items-center gap-4">
+          <div className="flex min-w-0 items-center gap-4">
             <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-red-950 via-red-900 to-red-800 text-amber-300 border border-amber-400/40 font-bold text-2xl flex items-center justify-center shadow-lg flex-shrink-0">
               {member.name.split(' ').map((n) => n[0]).slice(0, 2).join('')}
             </div>
-            <div>
+            <div className="min-w-0">
               <div className="flex items-center gap-2">
                 <h1 className="text-xl sm:text-2xl font-bold font-heading text-neutral-900 dark:text-white">
                   {member.name}
@@ -135,12 +135,12 @@ export const MemberProfileView: React.FC<MemberProfileViewProps> = ({ onBack }) 
                 <StatusBadge status={member.status} size="sm" />
               </div>
 
-              <div className="flex flex-wrap items-center gap-2 mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1 text-xs text-neutral-500 dark:text-neutral-400">
                 <span className="font-mono font-bold text-red-700 dark:text-amber-400">
                   {member.memberId}
                 </span>
                 {member.admissionNo && <span>• Adm: #{member.admissionNo}</span>}
-                <span>• {member.grade || member.department}</span>
+                {(member.grade || member.department) && <span>• {member.grade || member.department}</span>}
                 {member.house && (
                   <span className="bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 text-[10px] font-bold px-2 py-0.5 rounded-full font-mono">
                     {member.house} House
@@ -156,22 +156,22 @@ export const MemberProfileView: React.FC<MemberProfileViewProps> = ({ onBack }) 
         </div>
 
         {/* Member Contact Info Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 text-xs text-neutral-600 dark:text-neutral-300">
-          <div className="flex items-center gap-2.5">
-            <Mail className="w-4 h-4 text-neutral-400 flex-shrink-0" />
-            <span className="truncate">{member.email}</span>
+        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-3 text-xs text-neutral-600 dark:text-neutral-300 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid min-w-0 grid-cols-[1rem_minmax(0,1fr)] items-start gap-2.5 leading-5">
+            <Mail className="mt-0.5 h-4 w-4 text-neutral-400" />
+            <span className="min-w-0 break-words">{member.email || '—'}</span>
           </div>
-          <div className="flex items-center gap-2.5">
-            <Phone className="w-4 h-4 text-neutral-400 flex-shrink-0" />
-            <span className="font-mono">{member.phone}</span>
+          <div className="grid min-w-0 grid-cols-[1rem_minmax(0,1fr)] items-start gap-2.5 leading-5">
+            <Phone className="mt-0.5 h-4 w-4 text-neutral-400" />
+            <span className="min-w-0 break-words font-mono">{member.phone || '—'}</span>
           </div>
-          <div className="flex items-center gap-2.5">
-            <MapPin className="w-4 h-4 text-neutral-400 flex-shrink-0" />
-            <span className="truncate">{member.address}</span>
+          <div className="grid min-w-0 grid-cols-[1rem_minmax(0,1fr)] items-start gap-2.5 leading-5">
+            <MapPin className="mt-0.5 h-4 w-4 text-neutral-400" />
+            <span className="min-w-0 break-words">{member.address || '—'}</span>
           </div>
-          <div className="flex items-center gap-2.5">
-            <Calendar className="w-4 h-4 text-neutral-400 flex-shrink-0" />
-            <span>Registered {member.joinedDate}</span>
+          <div className="grid min-w-0 grid-cols-[1rem_minmax(0,1fr)] items-start gap-2.5 leading-5">
+            <Calendar className="mt-0.5 h-4 w-4 text-neutral-400" />
+            <span className="min-w-0 break-words">Registered {member.joinedDate || '—'}</span>
           </div>
         </div>
 
