@@ -104,25 +104,34 @@ export async function downloadLibraryCardPdf(member: Member) {
   const font = await pdf.embedFont(StandardFonts.Helvetica);
   const bold = await pdf.embedFont(StandardFonts.HelveticaBold);
 
-  page.drawRectangle({ x: 0, y: 0, width: 540, height: 340, color: rgb(0.07, 0.07, 0.08) });
-  page.drawText('RAHULA COLLEGE LIBRARY', { x: 28, y: 300, size: 16, font: bold, color: rgb(1, 1, 1) });
-  page.drawText('LIBRARY MEMBER ID', { x: 365, y: 302, size: 9, font: bold, color: rgb(0.85, 0.85, 0.85) });
-  page.drawLine({ start: { x: 28, y: 284 }, end: { x: 512, y: 284 }, thickness: 1, color: rgb(0.35, 0.35, 0.35) });
+  const ink = rgb(0.06, 0.06, 0.06);
+  const mid = rgb(0.38, 0.38, 0.38);
+  const paper = rgb(1, 1, 1);
+  const pale = rgb(0.94, 0.94, 0.94);
 
-  page.drawRectangle({ x: 28, y: 132, width: 92, height: 128, color: rgb(0.14, 0.14, 0.15), borderColor: rgb(0.55, 0.55, 0.55), borderWidth: 1 });
+  page.drawRectangle({ x: 0, y: 0, width: 540, height: 340, color: paper, borderColor: ink, borderWidth: 2 });
+  page.drawRectangle({ x: 0, y: 260, width: 540, height: 80, color: ink });
+  page.drawText('RAHULA COLLEGE', { x: 28, y: 302, size: 18, font: bold, color: paper });
+  page.drawText('LIBRARY  /  STUDENT IDENTITY CARD', { x: 29, y: 282, size: 9, font, color: rgb(0.82, 0.82, 0.82) });
+  page.drawText(member.type.toUpperCase(), { x: 422, y: 302, size: 9, font: bold, color: paper });
+  page.drawLine({ start: { x: 28, y: 268 }, end: { x: 512, y: 268 }, thickness: 1, color: rgb(0.55, 0.55, 0.55) });
+
+  page.drawRectangle({ x: 28, y: 120, width: 92, height: 126, color: pale, borderColor: ink, borderWidth: 1 });
   const initials = member.name.split(' ').map((part) => part[0]).slice(0, 2).join('');
-  page.drawText(initials, { x: 54, y: 194, size: 26, font: bold, color: rgb(0.9, 0.9, 0.9) });
-  page.drawText(member.admissionNo || 'RC-PASS', { x: 39, y: 148, size: 9, font, color: rgb(0.8, 0.8, 0.8) });
+  page.drawCircle({ x: 74, y: 190, size: 27, color: ink });
+  page.drawText(initials, { x: 57, y: 181, size: 20, font: bold, color: paper });
+  page.drawText(member.admissionNo || 'RC-PASS', { x: 39, y: 137, size: 9, font: bold, color: mid });
 
-  page.drawText(member.name, { x: 145, y: 240, size: 17, font: bold, color: rgb(1, 1, 1), maxWidth: 360 });
-  page.drawText(member.grade || member.department || 'Rahula College', { x: 145, y: 218, size: 10, font, color: rgb(0.75, 0.75, 0.75) });
-  page.drawText(`Member ID: ${member.memberId}`, { x: 145, y: 190, size: 10, font, color: rgb(0.9, 0.9, 0.9) });
-  page.drawText(`Valid until: ${member.expiryDate || '—'}`, { x: 145, y: 172, size: 10, font, color: rgb(0.9, 0.9, 0.9) });
-  if (member.house) page.drawText(`${member.house} House`, { x: 145, y: 150, size: 9, font, color: rgb(0.75, 0.75, 0.75) });
+  page.drawText(member.name, { x: 145, y: 220, size: 17, font: bold, color: ink, maxWidth: 360 });
+  page.drawText(member.grade || member.department || 'Rahula College', { x: 145, y: 198, size: 10, font, color: mid });
+  page.drawText('MEMBER ID', { x: 145, y: 169, size: 8, font: bold, color: mid });
+  page.drawText(member.memberId, { x: 145, y: 153, size: 11, font: bold, color: ink });
+  page.drawText(`VALID UNTIL  ${member.expiryDate || '—'}`, { x: 145, y: 134, size: 9, font, color: mid });
+  if (member.house) page.drawText(`${member.house} HOUSE`, { x: 145, y: 119, size: 8, font: bold, color: mid });
 
-  page.drawRectangle({ x: 28, y: 40, width: 484, height: 78, color: rgb(1, 1, 1) });
-  drawBarcode(page, member.memberId, 100, 58, 340, 42);
-  page.drawText(member.memberId, { x: 210, y: 45, size: 9, font: bold, color: rgb(0.1, 0.1, 0.1) });
+  page.drawRectangle({ x: 28, y: 32, width: 484, height: 68, color: paper, borderColor: ink, borderWidth: 1 });
+  drawBarcode(page, member.memberId, 100, 49, 340, 36);
+  page.drawText(member.memberId, { x: 210, y: 37, size: 8, font: bold, color: ink });
 
   const bytes = await pdf.save();
   downloadBlob(pdfBlob(bytes), `rahula-library-id-${safeFilePart(member.memberId)}.pdf`);
